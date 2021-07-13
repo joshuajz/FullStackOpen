@@ -10,9 +10,10 @@ const Button = ({label, clickEvent}) => {
 
 const Statistic = ({text, value}) => {
   return (
-  <div>
-    <p>{text} {value}</p>
-  </div>
+  <tr>
+    <td>{text}</td>
+    <td>{value}</td>
+  </tr>
   )
 }
 
@@ -28,12 +29,14 @@ const Stats = ({good, neutral, bad}) => {
 
   return (
     <>
-      <Statistic text='good' value={good}/>
-      <Statistic text='neutral' value={neutral}/>
-      <Statistic text='bad' value={bad}/>
-      <Statistic text='all' value={all}/>
-      <Statistic text='average' value={(good - bad) / all}/>
-      <Statistic text='positive' value={(good / all) * 100 + '%'}/>
+      <table>
+        <Statistic text='good' value={good}/>
+        <Statistic text='neutral' value={neutral}/>
+        <Statistic text='bad' value={bad}/>
+        <Statistic text='all' value={all}/>
+        <Statistic text='average' value={(good - bad) / all}/>
+        <Statistic text='positive' value={(good / all) * 100 + '%'}/>
+      </table>
     </>
   )
 }
