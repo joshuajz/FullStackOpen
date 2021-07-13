@@ -12,7 +12,27 @@ const randomNumber = (lowerBound, upperBound) => {
   return Math.floor(Math.random() * (upperBound - lowerBound) + lowerBound)
 }
 
+const determineWinner = (anecdotes, points) => {
+  const len_anecdotes = anecdotes.length - 1
+  var winner = {points: points[0], message: anecdotes[0]}
+  for (let i = 0; i < len_anecdotes; i++) {
+    if (winner.points < points[i]) {
+      winner = {points: points[i], message: anecdotes[i]}
+    }
+  }
+  return winner
+}
 
+const Winner = ({anecdotes, points}) => {
+  const winner = determineWinner(anecdotes, points)
+  return (
+    <>
+      <h3>Current Winner: </h3>
+      <p>{winner.message}</p>
+      <p>with {winner.points} votes</p>
+    </>
+  )
+}
 
 const App = () => {
   const anecdotes = [
@@ -39,10 +59,12 @@ const App = () => {
 
   return (
     <div>
+      <h3>Anecdote of the Day:</h3>
       {anecdotes[selected]}
       <p>has {points[selected]} votes</p>
       <Button label="Vote" event={() => {incrementVotes(selected)}} />
       <Button label="Next Anecdote" event={() => {setSelected(randomNumber(0, anecdotes.length - 1))}}/>
+      <Winner anecdotes={anecdotes} points={points}/>
     </div>
   )
 }
