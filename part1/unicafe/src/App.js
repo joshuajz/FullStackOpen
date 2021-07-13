@@ -10,6 +10,14 @@ const Button = ({label, clickEvent}) => {
 
 const Stats = ({good, neutral, bad}) => {
   const all = good + neutral + bad
+  if (all <= 0) {
+    return (
+      <div>
+        No feedback given.
+      </div>
+    )
+  }
+
   return (
     <>
       <p>good {good}</p>
