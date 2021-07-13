@@ -2,10 +2,10 @@ import React from 'react'
 
 const Course = ({course}) => {
     const exercises = course.parts.map(part => part.exercises)
-    var totalExercises = 0
-    for (let i = 0; i < exercises.length; i++) {
-        totalExercises += exercises[i]
-    }
+
+    const reducer = (accumlator, currentValue) => accumlator + currentValue
+
+    const totalExercises = exercises.reduce(reducer)
 
     return (
     <div>
