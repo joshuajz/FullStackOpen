@@ -13,6 +13,7 @@ const randomNumber = (lowerBound, upperBound) => {
 }
 
 
+
 const App = () => {
   const anecdotes = [
     'If it hurts, do it more often',
@@ -24,11 +25,23 @@ const App = () => {
     'Programming without an extremely heavy use of console.log is same as if a doctor would refuse to use x-rays or blod tests when dianosing patients'
   ]
 
+
+
   const [selected, setSelected] = useState(0)
+  const [points, setPoints] = useState({0: 0, 1: 0, 2: 0, 3:0, 4:0, 5:0, 6: 0})
+
+  const incrementVotes = (index) => {
+    const copyPoints = {... points}
+    copyPoints[index]+= 1
+    setPoints(copyPoints)
+  }
+
 
   return (
     <div>
       {anecdotes[selected]}
+      <p>has {points[selected]} votes</p>
+      <Button label="Vote" event={() => {incrementVotes(selected)}} />
       <Button label="Next Anecdote" event={() => {setSelected(randomNumber(0, anecdotes.length - 1))}}/>
     </div>
   )
