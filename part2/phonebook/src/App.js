@@ -16,6 +16,23 @@ const App = () => {
     setPhoneNumber(event.target.value)
   }
 
+  const [ search, setSearch] = useState('')
+
+  const handleSearchChange = (event) => {
+    setSearch(event.target.value)
+  }
+
+  const displayPeople = () => {
+    var people = []
+    for (let i = 0; i < persons.length; i++) {
+      if (persons[i].name.toLowerCase().includes(search.toLowerCase())) {
+        people = people.concat(persons[i])
+      }
+    }
+    console.log(people)
+    return people
+  }
+
   const addPerson = (event) => {
     event.preventDefault()
     if (persons.map(person => person.name).includes(newName)){
@@ -33,6 +50,10 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
+      <div>
+        Filter: <input value={search} onChange={handleSearchChange}/>
+      </div>
+      <h2>New</h2>
       <form onSubmit={addPerson}>
         <div>
           Name: <input value={newName} onChange={handleNoteChange}/>
@@ -45,7 +66,7 @@ const App = () => {
         </div>
       </form>
       <h2>Numbers</h2>
-      {persons.map(person => <p>{person.name} {person.phoneNumber}</p>)}
+      {displayPeople().map(person => <p key={person.name}>{person.name} {person.phoneNumber}</p>)}
     </div>
   )
 }
