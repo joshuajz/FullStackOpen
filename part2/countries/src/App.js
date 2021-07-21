@@ -1,30 +1,44 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 
-const DisplayCountries = ({ countries, foundCountries }) => {
+const CountryDisplay = ({ country }) => {
+  console.log(country);
+  if (!country.name) {
+    return <></>;
+  }
+
+  return (
+    <div>
+      <h1>{country.name}</h1>
+      <p>Capital: {country.capital}</p>
+      <p>Population: {country.population}</p>
+      <h3>Languages:</h3>
+      <ul>
+        {country.languages.map((language) => (
+          <li>{language.name}</li>
+        ))}
+      </ul>
+      <img src={country.flag} height="100" alt="The countries flag." />
+    </div>
+  );
+};
+
+const CountryListDisplay = ({ foundCountries, setDisplayCountry }) => {
   if (foundCountries.length > 10) {
     return <div>Too many matches, specify another filter.</div>;
   } else if (foundCountries.length === 1) {
-    const country = foundCountries[0];
-    return (
-      <div>
-        <h1>{country.name}</h1>
-        <p>Capital: {country.capital}</p>
-        <p>Population: {country.population}</p>
-        <h3>Languages:</h3>
-        <ul>
-          {country.languages.map((language) => (
-            <li>{language.name}</li>
-          ))}
-        </ul>
-        <img src={country.flag} height="100" alt="The countries flag." />
-      </div>
-    );
+    setDisplayCountry(foundCountries[0]);
+    return <></>;
   } else {
     return (
       <div>
         {foundCountries.map((country) => (
-          <p key={country.name}>{country.name}</p>
+          <p key={country.name}>
+            {country.name}{" "}
+            <button value={country} onClick={setDisplayCountry(this.value)}>
+              show
+            </button>
+          </p>
         ))}
       </div>
     );
@@ -34,6 +48,7 @@ const DisplayCountries = ({ countries, foundCountries }) => {
 const App = () => {
   const [countries, setCountries] = useState([]);
   const [country, setCountry] = useState("");
+  const [displayedCountry, setDisplayedCountry] = useState("");
 
   const inputChange = (event) => {
     setCountry(event.target.value);
@@ -55,16 +70,11 @@ const App = () => {
   return (
     <div>
       Find Countries: <input onChange={inputChange} />
-      <DisplayCountries
-        countries={countries}
+      <CountryListDisplay
         foundCountries={findCountries()}
+        setDisplayCountry={setDisplayedCountry}
       />
-      {/* {findCountries().map((c) => (
-        <p>{c}</p>
-      ))} */}
-      {/* {countries.map((country) => (
-        <p>{country.name}</p>
-      ))} */}
+      <CountryDisplay country={displayedCountry} />
     </div>
   );
 };
