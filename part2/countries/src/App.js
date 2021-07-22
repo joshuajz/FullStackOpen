@@ -3,9 +3,23 @@ import ReactDOM from "react-dom";
 import axios from "axios";
 
 const CountryDisplay = ({ country }) => {
-  if (!country.name) {
-    return <></>;
-  }
+  const [weather, setWeather] = useState({
+    'current': {
+      'weather_icons': ['none'],
+      'wind_speed': 'undefined',
+      'wind_dir': 'undefined',
+      'temperature': 'undefined'
+    }
+  })
+
+
+  useEffect(() => {
+    const api_key = process.env.REACT_APP_API_KEY
+    axios.get("http://api.weatherstack.com/current?access_key=" + api_key + "&query=" + country.capital)
+    .then((response) => {
+      setWeather(response.data)
+    })
+  }, [country])
 
   return (
     <div>
@@ -15,10 +29,15 @@ const CountryDisplay = ({ country }) => {
       <h3>Languages:</h3>
       <ul>
         {country.languages.map((language) => (
-          <li>{language.name}</li>
+          <li key={language.name}>{language.name}</li>
         ))}
       </ul>
       <img src={country.flag} height="100" alt="The countries flag." />
+      <h3>Weather in {country.capital}</h3>
+      <p><strong>Temperature:</strong> {weather.current.temperature} Celcius</p>
+      <img src={weather.current.weather_icons[0]} alt="Display of the weather"></img>
+      <p><strong>Wind:</strong> {weather.current.wind_speed}mph | Direction: {weather.current.wind_dir}</p>
+
     </div>
   );
 };
