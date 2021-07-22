@@ -54,7 +54,7 @@ const App = () => {
         onSubmit={addPerson}
       />
       <h2>Numbers</h2>
-      <DisplayPeople persons={persons} search={search} />
+      <DisplayPeople persons={persons} search={search} setPersons={setPersons}/>
     </div>
   );
 };

@@ -1,6 +1,7 @@
 import React from "react";
+import noteService from '../services/notes'
 
-const DisplayPeople = ({ persons, search }) => {
+const DisplayPeople = ({ persons, search, setPersons }) => {
   const displayPeople = () => {
     var people = [];
     for (let i = 0; i < persons.length; i++) {
@@ -15,7 +16,12 @@ const DisplayPeople = ({ persons, search }) => {
     <>
       {displayPeople().map((person) => (
         <p key={person.name}>
-          {person.name} {person.number}
+          {person.name} {person.number} <button value={person.id} onClick={() => {
+            if (window.confirm(`Delete: ${person.name}?`)) {
+              noteService.del(person.id).then(() => {
+                setPersons(persons.filter(p => p.id !== person.id))})
+            }
+          }}>delete</button>
         </p>
       ))}
     </>
