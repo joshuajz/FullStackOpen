@@ -28,6 +28,14 @@ app.get("/api/persons", (request, response) => {
   response.json(notes);
 });
 
+app.get("/info", (request, response) => {
+  response.send(
+    `<p>Phonebook has information for ${
+      notes.length
+    } people.</p><p>${Date()}</p>`
+  );
+});
+
 const PORT = 3000;
 app.listen(PORT, () => {
   console.log(`App listening on: ${PORT}`);
