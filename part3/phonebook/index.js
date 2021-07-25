@@ -36,6 +36,18 @@ app.get("/info", (request, response) => {
   );
 });
 
+app.get("/api/persons/:id", (request, response) => {
+  const id = Number(request.params.id);
+  const note = notes.find((note) => note.id === id);
+  if (note) {
+    response.json(note);
+  } else {
+    response.send(
+      "<h1>404</h1><p>Error!  That note id could not be found in the dataset.</p>"
+    );
+  }
+});
+
 const PORT = 3000;
 app.listen(PORT, () => {
   console.log(`App listening on: ${PORT}`);
