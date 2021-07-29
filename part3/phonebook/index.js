@@ -1,7 +1,9 @@
 const express = require("express");
 const app = express();
 
-let notes = [
+app.use(express.json());
+
+let people = [
   {
     id: 1,
     name: "Arto Hellas",
@@ -25,22 +27,22 @@ let notes = [
 ];
 
 app.get("/api/persons", (request, response) => {
-  response.json(notes);
+  response.json(people);
 });
 
 app.get("/info", (request, response) => {
   response.send(
     `<p>Phonebook has information for ${
-      notes.length
+      people.length
     } people.</p><p>${Date()}</p>`
   );
 });
 
 app.get("/api/persons/:id", (request, response) => {
   const id = Number(request.params.id);
-  const note = notes.find((note) => note.id === id);
-  if (note) {
-    response.json(note);
+  const person = people.find((p) => p.id === id);
+  if (person) {
+    response.json(person);
   } else {
     response.send(
       "<h1>404</h1><p>Error!  That note id could not be found in the dataset.</p>"
@@ -48,14 +50,26 @@ app.get("/api/persons/:id", (request, response) => {
   }
 });
 
-app.delete("/api/notes/:id", (request, response) => {
+app.delete("/api/persons/:id", (request, response) => {
   const id = Number(request.params.id);
-  notes = notes.filter((note) => note.id !== id);
+  person = people.filter((p) => p.id !== id);
 
   response.status(204).end();
 });
 
-const PORT = 3000;
+app.post("/api/persons", (request, response) => {
+  const body = request.body;
+
+  const new_number = {
+    id: parseInt(Math.random(0, 100000) * 100000),
+    name: body.name,
+    number: body.number,
+  };
+  people = people.concat(new_number);
+  response.json(new_number);
+});
+
+const PORT = 3001;
 app.listen(PORT, () => {
   console.log(`App listening on: ${PORT}`);
 });
