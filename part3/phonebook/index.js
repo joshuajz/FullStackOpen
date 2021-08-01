@@ -1,13 +1,14 @@
 const express = require("express");
 const app = express();
 var morgan = require("morgan");
+const cors = require("cors");
 
 app.use(express.json());
-
 app.use(morgan("tiny"));
 morgan.token("url", (request, response) => {
   return JSON.stringify(request.body || {});
 });
+app.use(cors());
 
 let people = [
   {
@@ -72,10 +73,11 @@ app.post("/api/persons", (request, response) => {
   if (!body.number) {
     return response.status(400).json({ error: "Phone Number is missing." });
   }
+
   if (
     people.filter((p) => {
       p.name === body.name;
-    })
+    }).length > 0
   ) {
     return response
       .status(400)
