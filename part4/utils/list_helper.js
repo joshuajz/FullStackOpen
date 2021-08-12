@@ -8,4 +8,17 @@ const totalLikes = (blogs) => {
   return total
 }
 
-module.exports = { dummy, totalLikes }
+const favouriteBlog = (blogs) => {
+  if (blogs.length === 0) {
+    return null
+  }
+
+  const largest = blogs.reduce((previous, current) => {
+    return (previous.likes > current.likes) ? previous : current
+  })
+  delete largest.__v
+  delete largest._id
+  return largest
+}
+
+module.exports = { dummy, totalLikes, favouriteBlog }
