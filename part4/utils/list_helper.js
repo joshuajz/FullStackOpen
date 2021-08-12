@@ -35,10 +35,15 @@ const mostBlogs = (blogs) => {
     return { 'author': author, 'blogs': authors[author] }
   }
 
-  const author =  Object.keys(authors).reduce((previous, current) => {
-    return previous > current ? previous : current
-  })
-  return { 'author': author, 'blogs': authors[author] }
+  var largest = 0
+  for (const [key, value] of Object.entries(authors)) {
+    if (value > largest) {largest = value}
+  }
+  var authorsObjects = []
+  for (const [key, value] of Object.entries(authors)) {
+    if (value === largest) {authorsObjects.push({ 'author': key, 'blogs': value })}
+  }
+  return (authorsObjects.length === 1) ? authorsObjects[0] : authorsObjects
 }
 
 module.exports = { dummy, totalLikes, favouriteBlog, mostBlogs }
