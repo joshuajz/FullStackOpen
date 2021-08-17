@@ -26,21 +26,30 @@ test('Returns the proper amount of notes.', async () => {
 })
 
 test('Unique identifier named "id"', async () => {
-  const contents = await Blog.find({})
-  contents.forEach(note => {
-    expect(note.id).toBeDefined()
-  })
+  const contents = await api.get('/api/blogs')
+  contents.body.forEach(blog => expect(blog.id).toBeDefined())
 })
 
 test('Adding a blog to the database', async () => {
-  const newNote = new Blog({'title': 'Why Fullstackopen is Awesome', 'author': 'John Oliver', 'likes': 77})
+  const newNote = {'title': 'Why Fullstackopen is Awesome', 'author': 'John Oliver', 'likes': 77}
+
+  await api.post('/api/blogs').send(newNote).expect(201).expect('Content-Type', /application\/json/)
+
+  const response = await api.get('/api/blogs')
+
+  const contents = response.body.map((b) => {console.log(b)
+    return b.title})
+
+  expect(response.body).toHaveLength(initalNotes.length + 1)
+  expect(contents).toContain('Why Fullstackopen is Awesome')
+})
+
+test('Adding a blog to the database, with no likes value.  Should default to 0.', async () => {
+  const newNote = new Blog({'title': 'Why Fullstackopen is Awesome', 'author': 'John Oliver'})
   await newNote.save()
 
-  const contents = await Blog.find({})
-  const titles = contents.map(r => r.title)
-
-  expect(contents).toHaveLength(initalNotes.length + 1)
-  expect(titles).toContain('Why Fullstackopen is Awesome')
+  const contents = await Blog.find({title: 'Why Fullstackopen is Awesome'})
+  expect(contents.likes).toBeEqual(0)
 })
 
 afterAll(() => {
