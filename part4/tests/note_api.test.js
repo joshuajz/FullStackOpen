@@ -25,6 +25,12 @@ test('Returns the proper amount of notes.', async () => {
   expect(response.body).toHaveLength(initalNotes.length)
 })
 
+test('Unique identifier named "id"', async () => {
+  const contents = await Blog.find({})
+  contents.forEach(note => {
+    expect(note.id).toBeDefined()
+  })
+})
 
 afterAll(() => {
   mongoose.connection.close()
