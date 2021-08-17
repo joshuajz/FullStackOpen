@@ -37,19 +37,20 @@ test('Adding a blog to the database', async () => {
 
   const response = await api.get('/api/blogs')
 
-  const contents = response.body.map((b) => {console.log(b)
-    return b.title})
+  const contents = response.body.map(b => b.title)
 
   expect(response.body).toHaveLength(initalNotes.length + 1)
   expect(contents).toContain('Why Fullstackopen is Awesome')
 })
 
 test('Adding a blog to the database, with no likes value.  Should default to 0.', async () => {
-  const newNote = new Blog({'title': 'Why Fullstackopen is Awesome', 'author': 'John Oliver'})
-  await newNote.save()
+  const newNote = {'title': 'Why Fullstackopen is Awesome', 'author': 'John Oliver'}
 
-  const contents = await Blog.find({title: 'Why Fullstackopen is Awesome'})
-  expect(contents.likes).toBeEqual(0)
+  await api.post('/api/blogs').send(newNote).expect(201).expect('Content-Type', /application\/json/)
+
+  const response = await api.get('/api/blogs')
+  const note = response.body.find((note) => note.title === 'Why Fullstackopen is Awesome')
+  expect(note.likes).toBe(0)
 })
 
 afterAll(() => {
