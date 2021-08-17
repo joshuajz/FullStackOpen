@@ -32,6 +32,17 @@ test('Unique identifier named "id"', async () => {
   })
 })
 
+test('Adding a blog to the database', async () => {
+  const newNote = new Blog({'title': 'Why Fullstackopen is Awesome', 'author': 'John Oliver', 'likes': 77})
+  await newNote.save()
+
+  const contents = await Blog.find({})
+  const titles = contents.map(r => r.title)
+
+  expect(contents).toHaveLength(initalNotes.length + 1)
+  expect(titles).toContain('Why Fullstackopen is Awesome')
+})
+
 afterAll(() => {
   mongoose.connection.close()
 })
