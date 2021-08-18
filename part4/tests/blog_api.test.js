@@ -4,7 +4,7 @@ const app = require('../app')
 const api = supertest(app)
 const Blog = require('../models/blog')
 
-const initalNotes = [{'title': 'Google\'s best images.', 'author': 'John Sparrow', 'likes': 10}, {'title': 'A Guide to Databases.', 'author': 'John Sparrow', 'likes': 19}, {'title': 'How to purchase from Amazon - A Guide for Seniors', 'author': 'Tim Apple', 'likes': 6}]
+const initalNotes = [{'title': 'Google\'s best images.', 'author': 'John Sparrow', 'likes': 10, 'url': 'https://google.com/'}, {'title': 'A Guide to Databases.', 'author': 'John Sparrow', 'likes': 19, 'url': 'https://database.com/'}, {'title': 'How to purchase from Amazon - A Guide for Seniors', 'author': 'Tim Apple', 'likes': 6, 'url': 'https://amazon.com/'}]
 
 beforeEach(async () => {
   await Blog.deleteMany({})
@@ -31,12 +31,10 @@ test('Unique identifier named "id"', async () => {
 })
 
 test('Adding a blog to the database', async () => {
-  const newNote = {'title': 'Why Fullstackopen is Awesome', 'author': 'John Oliver', 'likes': 77}
+  const newNote = { 'title': 'Why Fullstackopen is Awesome', 'author': 'John Oliver', 'likes': 77, 'url': 'https://fullstackopen.com/en/' }
 
-  await api.post('/api/blogs').send(newNote).expect(201).expect('Content-Type', /application\/json/)
-
+  await api.post('/api/blogs').send(newNote)//.expect(201).expect('Content-Type', /application\/json/)
   const response = await api.get('/api/blogs')
-
   const contents = response.body.map(b => b.title)
 
   expect(response.body).toHaveLength(initalNotes.length + 1)
@@ -44,7 +42,7 @@ test('Adding a blog to the database', async () => {
 })
 
 test('Adding a blog to the database, with no likes value.  Should default to 0.', async () => {
-  const newNote = {'title': 'Why Fullstackopen is Awesome', 'author': 'John Oliver'}
+  const newNote = {'title': 'Why Fullstackopen is Awesome', 'author': 'John Oliver', 'url': 'https://johnoliver.com/'}
 
   await api.post('/api/blogs').send(newNote).expect(201).expect('Content-Type', /application\/json/)
 
@@ -52,6 +50,12 @@ test('Adding a blog to the database, with no likes value.  Should default to 0.'
   const note = response.body.find((note) => note.title === 'Why Fullstackopen is Awesome')
   expect(note.likes).toBe(0)
 })
+
+test('Creating a new blog without a title or url.', async () => {
+  const newNote = {'author': 'John Oliver', 'likes': 10}
+
+  const result = await api.post('/api/blogs').send(newNote).expect(400)
+}, 10000)
 
 afterAll(() => {
   mongoose.connection.close()
