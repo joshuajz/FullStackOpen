@@ -16,46 +16,64 @@ beforeEach(async () => {
   await blogObject.save()
 })
 
-test('Connection to the database.', async () => {
-  await api.get('/api/blogs').expect(200).expect('Content-Type', /application\/json/)
+describe('Inital Notes', () => {
+  test('Connection to the database.', async () => {
+    await api.get('/api/blogs').expect(200).expect('Content-Type', /application\/json/)
+  })
+
+  test('Returns the proper amount of notes.', async () => {
+    const response = await api.get('/api/blogs')
+    expect(response.body).toHaveLength(initalNotes.length)
+  })
+
+  test('Unique identifier named "id"', async () => {
+    const contents = await api.get('/api/blogs')
+    contents.body.forEach(blog => expect(blog.id).toBeDefined())
+  })
 })
 
-test('Returns the proper amount of notes.', async () => {
-  const response = await api.get('/api/blogs')
-  expect(response.body).toHaveLength(initalNotes.length)
+describe('Additions', () => {
+  test('Adding a blog to the database', async () => {
+    const newNote = { 'title': 'Why Fullstackopen is Awesome', 'author': 'John Oliver', 'likes': 77, 'url': 'https://fullstackopen.com/en/' }
+
+    await api.post('/api/blogs').send(newNote)//.expect(201).expect('Content-Type', /application\/json/)
+    const response = await api.get('/api/blogs')
+    const contents = response.body.map(b => b.title)
+
+    expect(response.body).toHaveLength(initalNotes.length + 1)
+    expect(contents).toContain('Why Fullstackopen is Awesome')
+  })
+
+  test('Adding a blog to the database, with no likes value.  Should default to 0.', async () => {
+    const newNote = {'title': 'Why Fullstackopen is Awesome', 'author': 'John Oliver', 'url': 'https://johnoliver.com/'}
+
+    await api.post('/api/blogs').send(newNote).expect(201).expect('Content-Type', /application\/json/)
+
+    const response = await api.get('/api/blogs')
+    const note = response.body.find((note) => note.title === 'Why Fullstackopen is Awesome')
+    expect(note.likes).toBe(0)
+  })
+
+  test('Creating a new blog without a title or url.', async () => {
+    const newNote = {'author': 'John Oliver', 'likes': 10}
+
+    const result = await api.post('/api/blogs').send(newNote).expect(400)
+  })
 })
 
-test('Unique identifier named "id"', async () => {
-  const contents = await api.get('/api/blogs')
-  contents.body.forEach(blog => expect(blog.id).toBeDefined())
+describe('Deletions', () => {
+  test('Deleting a blog based off id', async () => {
+    const response = await api.get('/api/blogs')
+    const id = response.body[0].id
+    console.log('Deleting the blog with the id of: ', id)
+
+    await api.delete(`/api/blogs/id=${id}`)
+
+    const get = await api.get('/api/blogs')
+    expect(get.body).toHaveLength(initalNotes.length - 1)
+  })
 })
 
-test('Adding a blog to the database', async () => {
-  const newNote = { 'title': 'Why Fullstackopen is Awesome', 'author': 'John Oliver', 'likes': 77, 'url': 'https://fullstackopen.com/en/' }
-
-  await api.post('/api/blogs').send(newNote)//.expect(201).expect('Content-Type', /application\/json/)
-  const response = await api.get('/api/blogs')
-  const contents = response.body.map(b => b.title)
-
-  expect(response.body).toHaveLength(initalNotes.length + 1)
-  expect(contents).toContain('Why Fullstackopen is Awesome')
-})
-
-test('Adding a blog to the database, with no likes value.  Should default to 0.', async () => {
-  const newNote = {'title': 'Why Fullstackopen is Awesome', 'author': 'John Oliver', 'url': 'https://johnoliver.com/'}
-
-  await api.post('/api/blogs').send(newNote).expect(201).expect('Content-Type', /application\/json/)
-
-  const response = await api.get('/api/blogs')
-  const note = response.body.find((note) => note.title === 'Why Fullstackopen is Awesome')
-  expect(note.likes).toBe(0)
-})
-
-test('Creating a new blog without a title or url.', async () => {
-  const newNote = {'author': 'John Oliver', 'likes': 10}
-
-  const result = await api.post('/api/blogs').send(newNote).expect(400)
-}, 10000)
 
 afterAll(() => {
   mongoose.connection.close()
