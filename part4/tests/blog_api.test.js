@@ -74,6 +74,24 @@ describe('Deletions', () => {
   })
 })
 
+describe('Updating an ID', () => {
+  test('Updating a blog\'s likes', async () => {
+    const response = await api.get('/api/blogs')
+    const id = response.body[0].id
+    console.log('Updating the blog with the id of: ', id)
+
+    await api.put(`/api/blogs/${id}`).send({'likes': 100})
+
+    const get = await api.get('/api/blogs')
+    const newLikes = get.body.filter((instance) => {
+      if (instance.id === id) {
+        return instance.likes
+      }
+    })
+    expect(newLikes[0].likes).toEqual(100)
+  })
+})
+
 
 afterAll(() => {
   mongoose.connection.close()
