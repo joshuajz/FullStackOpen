@@ -29,8 +29,7 @@ usersRouter.post("/", async (request, response) => {
 })
 
 usersRouter.get("/", async (request, response) => {
-  const fetch = await User.find({})
-  console.log(fetch)
+  const fetch = await User.find({}).populate("blogs")
   response.json(fetch)
 })
 
