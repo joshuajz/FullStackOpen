@@ -1,5 +1,6 @@
 POST http://localhost:3003/api/blogs
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRlc3QiLCJpZCI6IjYxZDRjNjJkZTM2MWZmNDI1MDkxYjI1OSIsImlhdCI6MTY0MTMzNDc2Nn0.XgZxmzwVwJe5GAsD8VJ1IQbmGHA1powPFizJEDlXNOQ
 
 {
     "title": "Test", "url": "http://google.com", "author": "John Sparrow", "likes": 10, "user_id": "61d4bcbedfbb1e36255738ce"
