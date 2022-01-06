@@ -24,14 +24,18 @@ const getToken = (request, response, next) => {
 }
 
 const userExtractor = async (request, response, next) => {
-  console.log("made it")
-  const decodedToken = jwt.verify(request.token, process.env.SECRET)
-  if (!decodedToken.id) {
+  if (!request.token || request.token === null) {
     request.user = null
+    next()
+  } else {
+    const decodedToken = jwt.verify(request.token, process.env.SECRET)
+    if (!decodedToken.id) {
+      request.user = null
+    }
+    const user = await User.findById(decodedToken.id)
+    request.user = user
+    next()
   }
-  const user = await User.findById(decodedToken.id)
-  request.user = user
-  next()
 }
 
 module.exports = { errorHandler, getToken, userExtractor }
