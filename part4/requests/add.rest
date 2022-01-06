@@ -1,7 +1,7 @@
 POST http://localhost:3003/api/blogs
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRlc3QiLCJpZCI6IjYxZDRjNjJkZTM2MWZmNDI1MDkxYjI1OSIsImlhdCI6MTY0MTQ5OTk2Mn0.x8NktOXtGd2tl3pryCRA0oNXLzKjXMp18yqIySeaq4A
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRlc3QiLCJpZCI6IjYxZDRjNjJkZTM2MWZmNDI1MDkxYjI1OSIsImlhdCI6MTY0MTUwMDU2OX0.jhT6mXaRTSfDps02p7jlw3wbHE4iVMwwxy_lTWjj67I
 
 {
-    "title": "Test", "url": "http://google.com", "author": "John Sparrow", "likes": 10, "user_id": "61d4bcbedfbb1e36255738ce"
+    "title": "Test2", "url": "http://google.com", "author": "John Sparrow", "likes": 10, "user_id": "61d4bcbedfbb1e36255738ce"
 }

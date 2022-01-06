@@ -1,3 +1,6 @@
+const User = require("../models/user")
+const jwt = require("jsonwebtoken")
+
 const errorHandler = (error, request, response, next) => {
   console.log("##Error: ", error.name, ":", error.message)
 
@@ -12,14 +15,23 @@ const errorHandler = (error, request, response, next) => {
 
 const getToken = (request, response, next) => {
   const authorization = request.get("authorization")
-  console.log("MADE IT TO THE MIDDLEWARE")
   if (authorization && authorization.toLowerCase().startsWith("bearer ")) {
     request.token = authorization.substring(7)
-    console.log(request.token)
   } else {
     request.token = null
   }
   next()
 }
 
-module.exports = { errorHandler, getToken }
+const userExtractor = async (request, response, next) => {
+  console.log("made it")
+  const decodedToken = jwt.verify(request.token, process.env.SECRET)
+  if (!decodedToken.id) {
+    request.user = null
+  }
+  const user = await User.findById(decodedToken.id)
+  request.user = user
+  next()
+}
+
+module.exports = { errorHandler, getToken, userExtractor }
