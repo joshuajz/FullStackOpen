@@ -43,7 +43,6 @@ router.put("/:id", async (request, response) => {
 
 router.post("/", async (request, response) => {
   const blog = new Blog(request.body)
-
   const decodedToken = jwt.verify(request.token, process.env.SECRET)
 
   if (!request.token || !decodedToken.id) {
