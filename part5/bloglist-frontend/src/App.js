@@ -10,10 +10,39 @@ const App = () => {
   const [password, setPassword] = useState("")
   const [errorMessage, setErrorMessage] = useState(null)
   const [user, setUser] = useState(null)
+  const [title, setTitle] = useState("")
+  const [author, setAuthor] = useState("")
+  const [url, setUrl] = useState("")
+  const [likes, setLikes] = useState("")
 
   useEffect(() => {
     blogService.getAll().then((blogs) => setBlogs(blogs))
   }, [])
+
+  useEffect(() => {
+    const loggedUser = window.localStorage.getItem("loggedBlogappUser")
+    if (loggedUser) {
+      const user = JSON.parse(loggedUser)
+      setUser(user)
+    }
+  }, [])
+
+  const handleAddBlog = async (event) => {
+    event.preventDefault()
+    try {
+      const blog = { title, author, url, likes: parseInt(likes) }
+      await blogService.addBlog(blog, user.token)
+      setLikes("")
+      setUrl("")
+      setAuthor("")
+      setTitle("")
+    } catch (exception) {
+      setErrorMessage("Invalid Message Input")
+      setTimeout(() => {
+        setErrorMessage(null)
+      }, 5000)
+    }
+  }
 
   const handleLogin = async (event) => {
     event.preventDefault()
@@ -22,8 +51,9 @@ const App = () => {
         username: username,
         password: password,
       })
+      window.localStorage.setItem("loggedBlogappUser", JSON.stringify(user))
       setUser(user)
-      console.log(user)
+
       setUsername("")
       setPassword("")
     } catch (exception) {
@@ -32,6 +62,11 @@ const App = () => {
         setErrorMessage(null)
       }, 5000)
     }
+  }
+
+  const handleLogout = async (event) => {
+    setUser(null)
+    window.localStorage.removeItem("loggedBlogappUser")
   }
   if (user === null) {
     return (
@@ -73,10 +108,49 @@ const App = () => {
   return (
     <div>
       <h2>blogs</h2>
-      <p>{user.username} is logged in.</p>
+      <p>{user.username} is logged in.</p>{" "}
+      <button type="submit" onClick={handleLogout}>
+        logout
+      </button>
       {blogs.map((blog) => (
         <Blog key={blog.id} blog={blog} />
       ))}
+      <h2>create new</h2>
+      <form onSubmit={handleAddBlog}>
+        title:
+        <input
+          type="text"
+          value={title}
+          name="Title"
+          onChange={({ target }) => setTitle(target.value)}
+        />{" "}
+        <br></br>
+        author:
+        <input
+          type="text"
+          value={author}
+          name="Author"
+          onChange={({ target }) => setAuthor(target.value)}
+        />{" "}
+        <br></br>
+        url:
+        <input
+          type="text"
+          value={url}
+          name="URL"
+          onChange={({ target }) => setUrl(target.value)}
+        />{" "}
+        <br></br>
+        likes:{" "}
+        <input
+          type="text"
+          value={likes}
+          name="Likes"
+          onChange={({ target }) => setLikes(target.value)}
+        />{" "}
+        <br></br>
+        <button type="submit">create</button>
+      </form>
     </div>
   )
 }
