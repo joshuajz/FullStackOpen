@@ -3,6 +3,8 @@ import Blog from "./components/Blog"
 import blogService from "./services/blogs"
 import loginService from "./services/login"
 import Notification from "./components/Notification"
+import Toggleable from "./components/Toggleable"
+import BlogForm from "./components/BlogForm"
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
@@ -108,13 +110,6 @@ const App = () => {
           </div>
           <button type="submit">login</button>
         </form>
-
-        {/* <div>
-          <h1>Blogs:</h1>
-          {blogs.map((blog) => (
-            <Blog key={blog.id} blog={blog} />
-          ))}
-        </div> */}
       </div>
     )
   }
@@ -130,42 +125,9 @@ const App = () => {
       {blogs.map((blog) => (
         <Blog key={blog.id} blog={blog} />
       ))}
-      <h2>create new</h2>
-      <form onSubmit={handleAddBlog}>
-        title:
-        <input
-          type="text"
-          value={title}
-          name="Title"
-          onChange={({ target }) => setTitle(target.value)}
-        />{" "}
-        <br></br>
-        author:
-        <input
-          type="text"
-          value={author}
-          name="Author"
-          onChange={({ target }) => setAuthor(target.value)}
-        />{" "}
-        <br></br>
-        url:
-        <input
-          type="text"
-          value={url}
-          name="URL"
-          onChange={({ target }) => setUrl(target.value)}
-        />{" "}
-        <br></br>
-        likes:{" "}
-        <input
-          type="text"
-          value={likes}
-          name="Likes"
-          onChange={({ target }) => setLikes(target.value)}
-        />{" "}
-        <br></br>
-        <button type="submit">create</button>
-      </form>
+      <Toggleable buttonLabel="create new blog">
+        <BlogForm onSubmit={handleAddBlog} />
+      </Toggleable>
     </div>
   )
 }
