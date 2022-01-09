@@ -1,7 +1,9 @@
 import React, { useState } from "react"
+import blogService from "../services/blogs"
 
 const Blog = ({ blog }) => {
   const [visible, setVisibility] = useState(false)
+  const [likes, setLikes] = useState(blog.likes)
 
   const blogStyle = {
     paddingTop: 10,
@@ -18,6 +20,12 @@ const Blog = ({ blog }) => {
   const showWhenVisible = { display: visible ? "" : "none" }
   const hideWhenVisible = { display: visible ? "none" : "" }
 
+  const handleLike = () => {
+    setLikes(likes + 1)
+    blog.likes = blog.likes + 1
+    blogService.blogPut(blog)
+  }
+
   return (
     <div>
       <div style={blogStyle}>
@@ -27,7 +35,7 @@ const Blog = ({ blog }) => {
         <div style={showWhenVisible}>
           {blog.title} <button onClick={toggleVisibility}>hide</button> <br />
           {blog.url} <br />
-          likes {blog.likes} <button>like</button> <br />
+          likes {likes} <button onClick={handleLike}>like</button> <br />
           {blog.author}
         </div>
       </div>

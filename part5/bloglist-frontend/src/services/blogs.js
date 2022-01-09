@@ -11,5 +11,16 @@ const addBlog = async (credentials, token) => {
   })
   return response.data
 }
+const blogPut = async (credentials) => {
+  const cred = {
+    user: credentials.user.id,
+    likes: credentials.likes,
+    author: credentials.author,
+    title: credentials.title,
+    url: credentials.url,
+  }
+  const response = await axios.put(`${baseUrl}/${credentials.id}`, cred)
+  return response.data
+}
 
-export default { getAll, addBlog }
+export default { getAll, addBlog, blogPut }
