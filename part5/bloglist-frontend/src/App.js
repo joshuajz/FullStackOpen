@@ -36,6 +36,17 @@ const App = () => {
       setUrl("")
       setAuthor("")
       setTitle("")
+
+      const blogsUpdated = await blogService.getAll()
+      setBlogs(blogsUpdated)
+
+      setErrorMessage("Blog added successfully!")
+      console.log("set error msg")
+      console.log(errorMessage)
+      setTimeout(() => {
+        console.log(errorMessage)
+        setErrorMessage(null)
+      }, 5000)
     } catch (exception) {
       setErrorMessage("Invalid Message Input")
       setTimeout(() => {
@@ -53,9 +64,12 @@ const App = () => {
       })
       window.localStorage.setItem("loggedBlogappUser", JSON.stringify(user))
       setUser(user)
-
       setUsername("")
       setPassword("")
+      setErrorMessage("Successful Login!")
+      setTimeout(() => {
+        setErrorMessage(null)
+      }, 5000)
     } catch (exception) {
       setErrorMessage("Wrong Credentials")
       setTimeout(() => {
@@ -107,6 +121,7 @@ const App = () => {
 
   return (
     <div>
+      <Notification message={errorMessage} />
       <h2>blogs</h2>
       <p>{user.username} is logged in.</p>{" "}
       <button type="submit" onClick={handleLogout}>
