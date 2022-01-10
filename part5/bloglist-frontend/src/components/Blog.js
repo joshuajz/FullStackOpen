@@ -1,7 +1,7 @@
 import React, { useState } from "react"
 import blogService from "../services/blogs"
 
-const Blog = ({ blog, user }) => {
+const Blog = ({ blog, user, handleDelete }) => {
   const [visible, setVisibility] = useState(false)
   const [likes, setLikes] = useState(blog.likes)
   let deleteButton
@@ -27,17 +27,17 @@ const Blog = ({ blog, user }) => {
     blogService.blogPut(blog)
   }
 
-  const handleDelete = () => {
-    if (window.confirm("Are you sure you want to delete the blog?")) {
-      blogService.deleteBlog(blog.id, user.token)
-      console.log(user)
-    }
-  }
   console.log(user)
   if (user.username === blog.user.username) {
     deleteButton = (
       <div>
-        <button onClick={handleDelete}>delete</button>
+        <button
+          onClick={() => {
+            handleDelete(blog)
+          }}
+        >
+          delete
+        </button>
       </div>
     )
   }

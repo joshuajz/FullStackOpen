@@ -24,11 +24,9 @@ const blogPut = async (credentials) => {
 }
 const deleteBlog = async (id, token) => {
   console.log(`token: ${token}`)
-  const response = await axios.delete(
-    `${baseUrl}/${id}`,
-    { id: id },
-    { headers: { Authorization: `Bearer ${token}` } }
-  )
+  const response = await axios.delete(`${baseUrl}/${id}`, {
+    headers: { Authorization: `Bearer ${token}` },
+  })
   return response.data
 }
 

@@ -79,6 +79,15 @@ const App = () => {
     setUser(null)
     window.localStorage.removeItem("loggedBlogappUser")
   }
+
+  const handleDelete = (blogDelete) => {
+    if (window.confirm("Are you sure you want to delete the blog?")) {
+      blogService.deleteBlog(blogDelete.id, user.token)
+      console.log(user)
+      setBlogs(blogs.filter((blog) => blog.id !== blogDelete.id))
+    }
+  }
+
   console.log("user")
   console.log(user)
   if (user === null) {
@@ -120,7 +129,12 @@ const App = () => {
         logout
       </button>
       {blogs.map((blog) => (
-        <Blog key={blog.id} blog={blog} user={user} />
+        <Blog
+          key={blog.id}
+          blog={blog}
+          user={user}
+          handleDelete={handleDelete}
+        />
       ))}
       <Toggleable buttonLabel="create new blog">
         <BlogForm onSubmit={handleAddBlog} />
