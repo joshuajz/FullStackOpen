@@ -9,7 +9,15 @@ const BlogForm = ({ onSubmit }) => {
   return (
     <div>
       <h2>Create a new blog</h2>
-      <form onSubmit={onSubmit}>
+      <form
+        onSubmit={(event) => {
+          onSubmit(event, { title, author, url, likes })
+          setTitle("")
+          setAuthor("")
+          setUrl("")
+          setLikes("")
+        }}
+      >
         title:
         <input
           type="text"

@@ -22,5 +22,14 @@ const blogPut = async (credentials) => {
   const response = await axios.put(`${baseUrl}/${credentials.id}`, cred)
   return response.data
 }
+const deleteBlog = async (id, token) => {
+  console.log(`token: ${token}`)
+  const response = await axios.delete(
+    `${baseUrl}/${id}`,
+    { id: id },
+    { headers: { Authorization: `Bearer ${token}` } }
+  )
+  return response.data
+}
 
-export default { getAll, addBlog, blogPut }
+export default { getAll, addBlog, blogPut, deleteBlog }

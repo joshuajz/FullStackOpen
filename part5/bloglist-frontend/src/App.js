@@ -12,10 +12,6 @@ const App = () => {
   const [password, setPassword] = useState("")
   const [errorMessage, setErrorMessage] = useState(null)
   const [user, setUser] = useState(null)
-  const [title, setTitle] = useState("")
-  const [author, setAuthor] = useState("")
-  const [url, setUrl] = useState("")
-  const [likes, setLikes] = useState("")
 
   useEffect(() => {
     blogService
@@ -31,15 +27,12 @@ const App = () => {
     }
   }, [])
 
-  const handleAddBlog = async (event) => {
+  const handleAddBlog = async (event, { likes, author, title, url }) => {
     event.preventDefault()
+
     try {
       const blog = { title, author, url, likes: parseInt(likes) }
       await blogService.addBlog(blog, user.token)
-      setLikes("")
-      setUrl("")
-      setAuthor("")
-      setTitle("")
 
       const blogsUpdated = await blogService.getAll()
       setBlogs(blogsUpdated.sort((a, b) => b.likes - a.likes))
@@ -86,6 +79,8 @@ const App = () => {
     setUser(null)
     window.localStorage.removeItem("loggedBlogappUser")
   }
+  console.log("user")
+  console.log(user)
   if (user === null) {
     return (
       <div>
@@ -115,7 +110,7 @@ const App = () => {
       </div>
     )
   }
-
+  console.log(blogs)
   return (
     <div>
       <Notification message={errorMessage} />
@@ -125,7 +120,7 @@ const App = () => {
         logout
       </button>
       {blogs.map((blog) => (
-        <Blog key={blog.id} blog={blog} />
+        <Blog key={blog.id} blog={blog} user={user} />
       ))}
       <Toggleable buttonLabel="create new blog">
         <BlogForm onSubmit={handleAddBlog} />
