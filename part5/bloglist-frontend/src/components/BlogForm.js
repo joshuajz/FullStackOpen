@@ -1,9 +1,9 @@
-import React, { useState } from "react"
+import React, { useState } from 'react'
 
 const BlogForm = ({ onSubmit }) => {
-  const [title, setTitle] = useState("")
-  const [author, setAuthor] = useState("")
-  const [url, setUrl] = useState("")
+  const [title, setTitle] = useState('')
+  const [author, setAuthor] = useState('')
+  const [url, setUrl] = useState('')
   const [likes, setLikes] = useState(0)
 
   return (
@@ -12,10 +12,10 @@ const BlogForm = ({ onSubmit }) => {
       <form
         onSubmit={(event) => {
           onSubmit(event, { title, author, url, likes })
-          setTitle("")
-          setAuthor("")
-          setUrl("")
-          setLikes("")
+          setTitle('')
+          setAuthor('')
+          setUrl('')
+          setLikes('')
         }}
       >
         title:
@@ -42,7 +42,7 @@ const BlogForm = ({ onSubmit }) => {
           onChange={({ target }) => setUrl(target.value)}
         />
         <br></br>
-        likes:{" "}
+        likes:{' '}
         <input
           type="text"
           value={likes}

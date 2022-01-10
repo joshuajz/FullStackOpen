@@ -1,15 +1,15 @@
-import React, { useState, useEffect } from "react"
-import Blog from "./components/Blog"
-import blogService from "./services/blogs"
-import loginService from "./services/login"
-import Notification from "./components/Notification"
-import Toggleable from "./components/Toggleable"
-import BlogForm from "./components/BlogForm"
+import React, { useState, useEffect } from 'react'
+import Blog from './components/Blog'
+import blogService from './services/blogs'
+import loginService from './services/login'
+import Notification from './components/Notification'
+import Toggleable from './components/Toggleable'
+import BlogForm from './components/BlogForm'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
-  const [username, setUsername] = useState("")
-  const [password, setPassword] = useState("")
+  const [username, setUsername] = useState('')
+  const [password, setPassword] = useState('')
   const [errorMessage, setErrorMessage] = useState(null)
   const [user, setUser] = useState(null)
 
@@ -20,7 +20,7 @@ const App = () => {
   }, [])
 
   useEffect(() => {
-    const loggedUser = window.localStorage.getItem("loggedBlogappUser")
+    const loggedUser = window.localStorage.getItem('loggedBlogappUser')
     if (loggedUser) {
       const user = JSON.parse(loggedUser)
       setUser(user)
@@ -37,15 +37,15 @@ const App = () => {
       const blogsUpdated = await blogService.getAll()
       setBlogs(blogsUpdated.sort((a, b) => b.likes - a.likes))
 
-      setErrorMessage("Blog added successfully!")
-      console.log("set error msg")
+      setErrorMessage('Blog added successfully!')
+      console.log('set error msg')
       console.log(errorMessage)
       setTimeout(() => {
         console.log(errorMessage)
         setErrorMessage(null)
       }, 5000)
     } catch (exception) {
-      setErrorMessage("Invalid Message Input")
+      setErrorMessage('Invalid Message Input')
       setTimeout(() => {
         setErrorMessage(null)
       }, 5000)
@@ -59,37 +59,34 @@ const App = () => {
         username: username,
         password: password,
       })
-      window.localStorage.setItem("loggedBlogappUser", JSON.stringify(user))
+      window.localStorage.setItem('loggedBlogappUser', JSON.stringify(user))
       setUser(user)
-      setUsername("")
-      setPassword("")
-      setErrorMessage("Successful Login!")
+      setUsername('')
+      setPassword('')
+      setErrorMessage('Successful Login!')
       setTimeout(() => {
         setErrorMessage(null)
       }, 5000)
     } catch (exception) {
-      setErrorMessage("Wrong Credentials")
+      setErrorMessage('Wrong Credentials')
       setTimeout(() => {
         setErrorMessage(null)
       }, 5000)
     }
   }
 
-  const handleLogout = async (event) => {
+  const handleLogout = async () => {
     setUser(null)
-    window.localStorage.removeItem("loggedBlogappUser")
+    window.localStorage.removeItem('loggedBlogappUser')
   }
 
   const handleDelete = (blogDelete) => {
-    if (window.confirm("Are you sure you want to delete the blog?")) {
+    if (window.confirm('Are you sure you want to delete the blog?')) {
       blogService.deleteBlog(blogDelete.id, user.token)
-      console.log(user)
       setBlogs(blogs.filter((blog) => blog.id !== blogDelete.id))
     }
   }
 
-  console.log("user")
-  console.log(user)
   if (user === null) {
     return (
       <div>
@@ -124,7 +121,7 @@ const App = () => {
     <div>
       <Notification message={errorMessage} />
       <h2>blogs</h2>
-      <p>{user.username} is logged in.</p>{" "}
+      <p>{user.username} is logged in.</p>{' '}
       <button type="submit" onClick={handleLogout}>
         logout
       </button>

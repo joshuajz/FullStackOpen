@@ -1,5 +1,5 @@
-import React, { useState } from "react"
-import blogService from "../services/blogs"
+import React, { useState } from 'react'
+import blogService from '../services/blogs'
 
 const Blog = ({ blog, user, handleDelete }) => {
   const [visible, setVisibility] = useState(false)
@@ -9,7 +9,7 @@ const Blog = ({ blog, user, handleDelete }) => {
   const blogStyle = {
     paddingTop: 10,
     paddingLeft: 2,
-    border: "solid",
+    border: 'solid',
     borderWidth: 1,
     marginBottom: 5,
   }
@@ -18,8 +18,8 @@ const Blog = ({ blog, user, handleDelete }) => {
     setVisibility(!visible)
   }
 
-  const showWhenVisible = { display: visible ? "" : "none" }
-  const hideWhenVisible = { display: visible ? "none" : "" }
+  const showWhenVisible = { display: visible ? '' : 'none' }
+  const hideWhenVisible = { display: visible ? 'none' : '' }
 
   const handleLike = () => {
     setLikes(likes + 1)
