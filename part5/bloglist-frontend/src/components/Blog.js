@@ -27,7 +27,6 @@ const Blog = ({ blog, user, handleDelete }) => {
     blogService.blogPut(blog)
   }
 
-  console.log(user)
   if (user.username === blog.user.username) {
     deleteButton = (
       <div>
