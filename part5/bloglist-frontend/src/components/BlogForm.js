@@ -23,6 +23,7 @@ const BlogForm = ({ onSubmit }) => {
           type="text"
           value={title}
           name="Title"
+          id="title"
           onChange={({ target }) => setTitle(target.value)}
         />
         <br></br>
@@ -31,6 +32,7 @@ const BlogForm = ({ onSubmit }) => {
           type="text"
           value={author}
           name="Author"
+          id="author"
           onChange={({ target }) => setAuthor(target.value)}
         />
         <br></br>
@@ -39,6 +41,7 @@ const BlogForm = ({ onSubmit }) => {
           type="text"
           value={url}
           name="URL"
+          id="url"
           onChange={({ target }) => setUrl(target.value)}
         />
         <br></br>
@@ -47,10 +50,13 @@ const BlogForm = ({ onSubmit }) => {
           type="text"
           value={likes}
           name="Likes"
+          id="likes"
           onChange={({ target }) => setLikes(target.value)}
         />
         <br></br>
-        <button type="submit">create</button>
+        <button type="submit" id="submit">
+          create
+        </button>
       </form>
     </div>
   )
