@@ -50,7 +50,11 @@ const Blog = ({ blog, user, handleDelete }) => {
         <div style={showWhenVisible} className="toggleableContent">
           {blog.title} <button onClick={toggleVisibility}>hide</button> <br />
           {blog.url} <br />
-          likes {likes} <button onClick={handleLike}>like</button> <br />
+          likes {likes}{' '}
+          <button onClick={handleLike} className="likeButton">
+            like
+          </button>{' '}
+          <br />
           {blog.author}
           {deleteButton}
         </div>
