@@ -131,14 +131,17 @@ const App = () => {
       <button type="submit" onClick={handleLogout}>
         logout
       </button>
-      {blogs.map((blog) => (
-        <Blog
-          key={blog.id}
-          blog={blog}
-          user={user}
-          handleDelete={handleDelete}
-        />
-      ))}
+      <div id="blogs-list">
+        {blogs.map((blog) => (
+          <Blog
+            key={blog.id}
+            blog={blog}
+            user={user}
+            handleDelete={handleDelete}
+            className="blog"
+          />
+        ))}
+      </div>
       <Toggleable buttonLabel="create new blog" id="create-blog">
         <BlogForm onSubmit={handleAddBlog} />
       </Toggleable>

@@ -26,8 +26,7 @@ const Blog = ({ blog, user, handleDelete }) => {
     blog.likes = blog.likes + 1
     blogService.blogPut(blog)
   }
-  console.log(user)
-  console.log(blog)
+
   if (user && user.username === blog.user.username) {
     deleteButton = (
       <div>
@@ -52,7 +51,7 @@ const Blog = ({ blog, user, handleDelete }) => {
             view
           </button>
         </div>
-        <div style={showWhenVisible} className="toggleableContent">
+        <div style={showWhenVisible} className="blog">
           {blog.title} <button onClick={toggleVisibility}>hide</button> <br />
           {blog.url} <br />
           likes {likes}{' '}

@@ -73,20 +73,57 @@ describe('login form', function () {
             likes: '10',
           },
         })
+
+        cy.request({
+          method: 'POST',
+          url: 'http://localhost:3003/api/blogs',
+          headers: {
+            Authorization: `bearer ${
+              JSON.parse(localStorage.getItem('loggedBlogappUser')).token
+            }`,
+          },
+          body: {
+            title: 'Book2',
+            author: 'Barack',
+            url: 'https://google.com',
+            likes: '12',
+          },
+        })
+
         cy.visit('http://localhost:3000')
+        cy.contains('Title').parent().as('blog1')
+        cy.contains('Book2').parent().as('blog2')
       })
 
       it('like a blog', function () {
         cy.get('#view-blog').click()
-        cy.contains('likes 10')
-        cy.get('.likeButton').click()
-        cy.contains('likes 11')
+        cy.contains('likes 12')
+        cy.get('.likeButton').first().click()
+        cy.contains('likes 13')
       })
 
       it('delete a blog', function () {
         cy.get('#view-blog').click()
         cy.get('#delete-button').click()
-        cy.contains('Title').should('not.exist')
+        cy.contains('Book2').should('not.exist')
+        cy.contains('Title')
+      })
+      it('blogs are in sorted order', function () {
+        cy.get('@blog1').contains('view').click()
+        cy.get('@blog1').contains('like').as('like1')
+
+        cy.get('@like1').click()
+        cy.wait(250)
+        cy.get('@like1').click()
+        cy.wait(250)
+        cy.get('@like1').click()
+
+        cy.visit('http://localhost:3000')
+
+        cy.get('.blog').then((blogList) => {
+          cy.wrap(blogList[0]).contains(13)
+          cy.wrap(blogList[1]).contains(12)
+        })
       })
     })
   })
