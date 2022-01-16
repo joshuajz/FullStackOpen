@@ -30,4 +30,58 @@ describe('login form', function () {
       cy.contains('Wrong Credentials')
     })
   })
+
+  describe('When logged in', function () {
+    beforeEach(function () {
+      cy.request('POST', 'http://localhost:3003/api/login', {
+        username: 'jane',
+        password: 'doe',
+      }).then(function (response) {
+        localStorage.setItem('loggedBlogappUser', JSON.stringify(response.body))
+        cy.visit('http://localhost:3000')
+      })
+    })
+
+    it('a blog can be created', function () {
+      cy.get('#create-blog').click()
+      cy.get('#title').type('Title')
+      cy.get('#author').type('Obama')
+      cy.get('#url').type('https://google.com')
+      cy.get('#likes').type('10')
+      cy.get('#submit').click()
+
+      cy.contains('Blog added successfully!')
+      cy.contains('Title')
+    })
+
+    describe('when a blog has been created', function () {
+      beforeEach(function () {
+        console.log(localStorage.getItem('loggedBlogappUser'))
+
+        cy.request({
+          method: 'POST',
+          url: 'http://localhost:3003/api/blogs',
+          headers: {
+            Authorization: `bearer ${
+              JSON.parse(localStorage.getItem('loggedBlogappUser')).token
+            }`,
+          },
+          body: {
+            title: 'Title',
+            author: 'Obama',
+            url: 'https://google.com',
+            likes: '10',
+          },
+        })
+        cy.visit('http://localhost:3000')
+      })
+
+      it('like a blog', function () {
+        cy.get('#view-blog').click()
+        cy.contains('likes 10')
+        cy.get('.likeButton').click()
+        cy.contains('likes 11')
+      })
+    })
+  })
 })

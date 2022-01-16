@@ -139,7 +139,7 @@ const App = () => {
           handleDelete={handleDelete}
         />
       ))}
-      <Toggleable buttonLabel="create new blog">
+      <Toggleable buttonLabel="create new blog" id="create-blog">
         <BlogForm onSubmit={handleAddBlog} />
       </Toggleable>
     </div>

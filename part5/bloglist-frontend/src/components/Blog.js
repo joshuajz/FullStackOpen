@@ -46,7 +46,10 @@ const Blog = ({ blog, user, handleDelete }) => {
     <div>
       <div style={blogStyle}>
         <div style={hideWhenVisible}>
-          {blog.title} <button onClick={toggleVisibility}>view</button>
+          {blog.title}{' '}
+          <button onClick={toggleVisibility} id="view-blog">
+            view
+          </button>
         </div>
         <div style={showWhenVisible} className="toggleableContent">
           {blog.title} <button onClick={toggleVisibility}>hide</button> <br />
