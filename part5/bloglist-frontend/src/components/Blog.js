@@ -26,8 +26,9 @@ const Blog = ({ blog, user, handleDelete }) => {
     blog.likes = blog.likes + 1
     blogService.blogPut(blog)
   }
-
-  if (user.username === blog.user.username) {
+  console.log(user)
+  console.log(blog)
+  if (user && user.username === blog.user.username) {
     deleteButton = (
       <div>
         <button

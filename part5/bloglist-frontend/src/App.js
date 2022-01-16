@@ -18,6 +18,8 @@ const App = () => {
       .getAll()
       .then((blogs) => setBlogs(blogs.sort((a, b) => b.likes - a.likes)))
   }, [])
+  console.log('blogs')
+  console.log(blogs)
 
   useEffect(() => {
     const loggedUser = window.localStorage.getItem('loggedBlogappUser')
