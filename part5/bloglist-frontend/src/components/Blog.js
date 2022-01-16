@@ -35,6 +35,7 @@ const Blog = ({ blog, user, handleDelete }) => {
           onClick={() => {
             handleDelete(blog)
           }}
+          id="delete-button"
         >
           delete
         </button>

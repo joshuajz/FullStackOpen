@@ -82,6 +82,12 @@ describe('login form', function () {
         cy.get('.likeButton').click()
         cy.contains('likes 11')
       })
+
+      it('delete a blog', function () {
+        cy.get('#view-blog').click()
+        cy.get('#delete-button').click()
+        cy.contains('Title').should('not.exist')
+      })
     })
   })
 })
