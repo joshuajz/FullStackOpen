@@ -13,10 +13,13 @@ const NewAnecdote = () => {
   }
 
   return (
-    <form onSubmit={addAnecdote}>
-      <input name="anecdote" />
-      <button type="submit">submit</button>
-    </form>
+    <div>
+      <h2>create new</h2>
+      <form onSubmit={addAnecdote}>
+        <input name="anecdote" />
+        <button type="submit">submit</button>
+      </form>
+    </div>
   )
 }
 export default NewAnecdote
